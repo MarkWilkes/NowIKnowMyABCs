@@ -15,15 +15,27 @@ public class ABCs {
 	public static void main(String[] args) {
 		cards = new CardDatabase();
 		
-		/*
-		String s1 = "[R, P, G, F, H, Z, U, D, X]";
-		CardName c1 = new CardName(s1);
-		String s2 = "[E, V, R, Q, U, T, J, L]";
-		CardName c2 = new CardName(s2);
-		*/
+		loadFromAllSetsx();
 		
-		String filePath = "C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\AllSets-x.json";
-		String printPath = "C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\cards-MultiLang.txt";
+		//loadFromAllCards();
+		
+		//loadSets();
+		
+		cards.reduceDatabase();
+		
+		//cards.print();
+		
+		cards.exportSets();
+		
+		cards.cover2();
+		//as it turns out there are a lot of 3 covers
+		//cards.cover3();
+	}
+
+	//loads into the CardsDatabase variable cards
+	public static void loadFromAllSetsx(){
+		File file = new File(System.getProperty("user.dir") + File.separator + "AllSets-x.json");
+		String printPath = System.getProperty("user.dir") + File.separator + "cards-MultiLang.txt";
 		CardName cnCard = null;
 		
 		File f = new File(printPath);
@@ -49,7 +61,7 @@ public class ABCs {
 		BufferedWriter bw = new BufferedWriter(fw);
 		
 		try {
-			FileReader reader = new FileReader(filePath);
+			FileReader reader = new FileReader(file.getAbsolutePath());
 			JSONParser parser = new JSONParser();
 			JSONObject obj = (JSONObject)parser.parse(reader);
 			
@@ -74,8 +86,6 @@ public class ABCs {
 						System.exit(-1);
 					}
 				}
-				
-				
 			}
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
@@ -93,10 +103,11 @@ public class ABCs {
 			System.out.println("Failed to close writer");
 			System.exit(-1);
 		}
-		
-		//long iter = 0;
-		/*
-		String filePath = "C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\AllCards.json";
+	}
+
+	//loads into the CardsDatabase variable cards
+	public static void loadFromAllCards(){
+		String filePath = System.getProperty("user.dir")+ File.separator + "AllCards.json";
 		
 		try {
 			// read the json file
@@ -113,20 +124,7 @@ public class ABCs {
 				String name = (String)jobj.get("name");
 				CardName card = new CardName(name);
 				cards.add(card);
-				//System.out.println(++iter);
-				
-				if(card.getSet().containsAll(c1.getSet()) || card.getSet().containsAll(c2.getSet())){
-					System.out.println (name);
-				}
-				
-				//System.out.println(name);
 			}
-			
-			//String name = null;
-			
-			
-			//System.out.println();
-		
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (IOException ex) {
@@ -136,14 +134,12 @@ public class ABCs {
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 		}
-		*/
-		
-		/*
-		// Open the file
+	}
+	
+	public static void loadSets(){
 		FileInputStream fstream = null;
 		try {
-			//fstream = new FileInputStream("C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\AllCardsSets.txt");
-			fstream = new FileInputStream("C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\AllCards.txt");
+			fstream = new FileInputStream(System.getProperty("user.dir")+ File.separator + "AllCardsSets.txt");
 		} catch (FileNotFoundException e) {
 			System.out.println("File open error");
 			System.exit(-1);
@@ -156,13 +152,7 @@ public class ABCs {
 		try {
 			while ((strLine = br.readLine()) != null)   {
 				card = new CardName(strLine);
-				cards.add(card);
-				
-				if(card.getSet().containsAll(c1.getSet()) || card.getSet().containsAll(c2.getSet())){
-					System.out.println (strLine);
-				}
-				
-		
+				cards.add(card);				
 			}
 		} catch (IOException e) {
 			System.out.println("File line read error");
@@ -176,34 +166,6 @@ public class ABCs {
 			System.out.println("file close failed");
 			System.exit(-1);
 		}
-		*/
-		
-		cards.reduceDatabase();
-		
-		cards.print();
-		
-		cards.exportSets();
-		/*
-		CardDatabase cover = cards.cover2();
-		System.out.print("Cover of 2 is:");
-		if(cover != null){
-			cover.print();
-		}
-		else {
-			System.out.println(" N/A");
-		}
-		*/
-		/*
-		cover = cards.cover3();
-		System.out.print("Cover of 3 is:");
-		if(cover != null){
-			cover.print();
-		}
-		else {
-			System.out.println(" N/A");
-		}
-		*/
-		
 	}
-	
 }
+

@@ -26,21 +26,35 @@ public class CardDatabase {
 		HashSet<CardName> s = new HashSet<CardName>();
 		s.addAll(cards);
 		
-		//long iter = 0;
-		
 		for(CardName i : s){
 			for(CardName j : s){
-				//System.out.println(++iter);
-				if(1 == properSubset(i, j)){
+				int res = properSubset(i, j);
+				if(1 == res){
 					cards.remove(j);
 				}
-				else if(0 == properSubset(i,j)){
+				else if(0 == res){
 					cards.remove(i);
 					break;
 				}
 			}
 		}
 		
+		s = new HashSet<CardName>();
+		s.addAll(cards);
+		
+		System.out.println("Done removing subsets");
+		System.out.println(s.size());
+		CardName[] a = s.toArray(new CardName[s.size()]);
+		
+		for(int i = 0; i < a.length-1; i ++){
+			for(int j = (i+1); j < a.length; j ++){
+				int res = properSubset(a[i], a[j]);
+				if(res == -2){
+					cards.remove(a[j]);
+				}
+			}
+		}
+		System.out.println("Done removing duplicates");
 	}
 	
 	public void print(){
@@ -109,7 +123,8 @@ public class CardDatabase {
 		return -1;
 	}
 	
-	public CardDatabase cover2(){
+	public void cover2(){
+		System.out.print("Cover of 2 is: \n");
 		
 		HashSet<CardName> s = new HashSet<CardName>();
 		s.addAll(cards);
@@ -122,21 +137,17 @@ public class CardDatabase {
 				union.addAll(i.getSet());
 				union.addAll(j.getSet());
 				if(coversAlphabet(union)){
-					
 					CardDatabase covered = new CardDatabase();
-					
 					covered.add(i);
 					covered.add(j);
-					return covered;
-					
+					covered.print();
 				}
 			}
 		}
-		
-		return (null);
 	}
 
-	public CardDatabase cover3(){
+	public void cover3(){
+		System.out.print("Cover of 3 is: \n");
 		
 		HashSet<CardName> s = new HashSet<CardName>();
 		s.addAll(cards);
@@ -151,19 +162,15 @@ public class CardDatabase {
 					union.addAll(j.getSet());
 					union.addAll(k.getSet());
 					if(coversAlphabet(union)){
-						
 						CardDatabase covered = new CardDatabase();
-						
 						covered.add(i);
 						covered.add(j);
 						covered.add(k);
-						return covered;
+						covered.print();
 					}	
 				}
 			}
 		}
-		
-		return (null);
 	}
 	
 	private boolean coversAlphabet(HashSet<Letters> s){

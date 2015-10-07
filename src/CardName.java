@@ -7,6 +7,10 @@ public class CardName {
 		
 	}
 	
+	public boolean equals(CardName c){
+		return card.containsAll(c.getSet());
+	}
+	
 	public CardName(String s){
 		//System.out.println(s);
 		card = getSet(s);
