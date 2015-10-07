@@ -43,7 +43,7 @@ public class CardDatabase {
 		s.addAll(cards);
 		
 		System.out.println("Done removing subsets");
-		System.out.println(s.size());
+		//System.out.println(s.size());
 		CardName[] a = s.toArray(new CardName[s.size()]);
 		
 		for(int i = 0; i < a.length-1; i ++){
@@ -62,7 +62,7 @@ public class CardDatabase {
 	}
 	
 	public void exportSets(){
-		File f = new File("C:\\Users\\Mark\\workspace\\NowIKnowMyABCs\\AllCardsSets.txt");
+		File f = new File(System.getProperty("user.dir")+ File.separator + "AllCardsSets.txt");
 		
 		if(!f.exists()){
 			try {
