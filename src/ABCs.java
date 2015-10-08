@@ -34,6 +34,9 @@ public class ABCs {
 
 	//loads into the CardsDatabase variable cards
 	public static void loadFromAllSetsx(){
+		/*
+		 * You need to put the MTGJSON's allsets-x in the ABCs directory
+		 */
 		File file = new File(System.getProperty("user.dir") + File.separator + "AllSets-x.json");
 		String printPath = System.getProperty("user.dir") + File.separator + "cards-MultiLang.txt";
 		CardName cnCard = null;
@@ -76,6 +79,7 @@ public class ABCs {
 				while(c.hasNext()){
 					JSONObject card = (JSONObject) c.next();
 					try {
+						
 						String cName = (String)card.get("name");
 						bw.write(cName + "\n");
 						cnCard = new CardName(cName);
@@ -107,6 +111,9 @@ public class ABCs {
 
 	//loads into the CardsDatabase variable cards
 	public static void loadFromAllCards(){
+		/*
+		 * You need to put the MTGJSON's allcard in the ABCs directory
+		 */
 		String filePath = System.getProperty("user.dir")+ File.separator + "AllCards.json";
 		
 		try {
