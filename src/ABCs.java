@@ -78,16 +78,29 @@ public class ABCs {
 				
 				while(c.hasNext()){
 					JSONObject card = (JSONObject) c.next();
-					try {
+					
+					JSONArray cTypes = (JSONArray)card.get("types");
+					if(cTypes != null){
+						Iterator<?> typ = cTypes.iterator();
+						boolean spell = false;
 						
-						String cName = (String)card.get("name");
-						bw.write(cName + "\n");
-						cnCard = new CardName(cName);
-						cards.add(cnCard);
-						
-					} catch (IOException e) {
-						System.out.println("Failed to write line");
-						System.exit(-1);
+						while(typ.hasNext()){
+							String type = (String) typ.next();
+							if(type.equals("Instant") || type.equals("Sorcery")){
+								spell = true;
+							}
+						}
+						if(!spell){
+							try {
+								String cName = (String)card.get("name");
+								bw.write(cName + "\n");
+								cnCard = new CardName(cName);
+								cards.add(cnCard);
+							} catch (IOException e) {
+								System.out.println("Failed to write line");
+								System.exit(-1);
+							}
+						}
 					}
 				}
 			}

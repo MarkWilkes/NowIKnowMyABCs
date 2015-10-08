@@ -25,6 +25,7 @@ public class CardDatabase {
 		
 		HashSet<CardName> s = new HashSet<CardName>();
 		s.addAll(cards);
+		//System.out.println(s.size());
 		
 		for(CardName i : s){
 			for(CardName j : s){
@@ -43,7 +44,6 @@ public class CardDatabase {
 		s.addAll(cards);
 		
 		System.out.println("Done removing subsets");
-		//System.out.println(s.size());
 		CardName[] a = s.toArray(new CardName[s.size()]);
 		
 		for(int i = 0; i < a.length-1; i ++){
