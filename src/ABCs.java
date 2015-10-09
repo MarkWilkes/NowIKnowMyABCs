@@ -11,25 +11,16 @@ public class ABCs {
 
 	public static CardDatabase cards;
 	public static CardName card;
+	public static BufferedReader in;
 	
 	public static void main(String[] args) {
+		in = new BufferedReader(new InputStreamReader(System.in));
 		cards = new CardDatabase();
 		
-		loadFromAllSetsx();
+		loadData();
 		
-		//loadFromAllCards();
+		checkReduce();
 		
-		//loadSets();
-		
-		cards.reduceDatabase();
-		
-		//cards.print();
-		
-		cards.exportSets();
-		
-		cards.cover2();
-		//as it turns out there are a lot of 3 covers
-		//cards.cover3();
 	}
 
 	//loads into the CardsDatabase variable cards
@@ -66,32 +57,41 @@ public class ABCs {
 		try {
 			FileReader reader = new FileReader(file.getAbsolutePath());
 			JSONParser parser = new JSONParser();
+			//read set-x.json
 			JSONObject obj = (JSONObject)parser.parse(reader);
 			
+			//get keyset
 			@SuppressWarnings("unchecked")
 			Set<String> keys = (Set<String>) obj.keySet();
 			
+			//for each of the sets
 			for(String i: keys){
+				//get the cards from the set
 				JSONObject set = (JSONObject)obj.get(i);
 				JSONArray setOfCards = (JSONArray)set.get("cards");
 				Iterator<?> c = setOfCards.iterator();
 				
+				//for all the cards
 				while(c.hasNext()){
 					JSONObject card = (JSONObject) c.next();
 					
+					//check the types
 					JSONArray cTypes = (JSONArray)card.get("types");
 					if(cTypes != null){
 						Iterator<?> typ = cTypes.iterator();
 						boolean spell = false;
 						
+						//for all the types
 						while(typ.hasNext()){
 							String type = (String) typ.next();
 							if(type.equals("Instant") || type.equals("Sorcery")){
 								spell = true;
 							}
 						}
+						//if they aren't an instant or sorcery
 						if(!spell){
 							try {
+								//add them to the sets and put them in the cards
 								String cName = (String)card.get("name");
 								bw.write(cName + "\n");
 								cnCard = new CardName(cName);
@@ -136,14 +136,32 @@ public class ABCs {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject obj = (JSONObject)jsonParser.parse(reader);
 			
+			//get all the cards
 			@SuppressWarnings("unchecked")
 			Set<String> keys =(Set<String>) obj.keySet();
 			
+			//for all the cards
 			for(String i: keys){
-				JSONObject jobj = (JSONObject)obj.get(i);
-				String name = (String)jobj.get("name");
-				CardName card = new CardName(name);
-				cards.add(card);
+				JSONObject card = (JSONObject)obj.get(i);
+				JSONArray cTypes = (JSONArray)card.get("types");
+				if(cTypes != null){
+					Iterator<?> typ = cTypes.iterator();
+					boolean spell = false;
+					
+					//for all the types
+					while(typ.hasNext()){
+						String type = (String) typ.next();
+						if(type.equals("Instant") || type.equals("Sorcery")){
+							spell = true;
+						}
+					}
+					//if they aren't an instant or sorcery
+					if(!spell){
+						String name = (String)card.get("name");
+						CardName cardname = new CardName(name);
+						cards.add(cardname);
+					}
+				}
 			}
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
@@ -185,6 +203,142 @@ public class ABCs {
 		} catch (IOException e) {
 			System.out.println("file close failed");
 			System.exit(-1);
+		}
+	}
+	
+	public static void loadData(){
+		//loop until we get a valid input
+		while(true){
+			String line = null;
+			//prompt
+			System.out.println("What you like to load from? \n"
+					+ "AllSets-x.json   (1) \n"
+					+ "AllCards.json    (2) \n"
+					+ "AllCardsSets.txt (3) \n");
+			
+			//read line
+			try { line = in.readLine();} 
+			catch (IOException e) { e.printStackTrace();}
+			
+			//check load type
+			if(line.equals("1")){
+				loadFromAllSetsx();
+				return;
+			}
+			else if(line.equals("2")){
+				loadFromAllCards();
+				return;
+			}
+			else if(line.equals("3")){
+				loadSets();
+				return;
+			}
+			else{
+				//invalid
+				System.out.println("Please input the number associated with what you would like to load.");
+			}
+		}
+	}
+	
+	public static void checkReduce(){
+		while(true){
+			String line = null;
+			//prompt
+			System.out.println("Would you like to reduce the data set? (Y/N)");
+			
+			//read line
+			try { line = in.readLine();} 
+			catch (IOException e) { e.printStackTrace();}
+			
+			if(line.equals("Y")){
+				cards.reduceDatabase();
+				checkPrint();
+				checkExport();
+				checkCover();
+				return;
+			}
+			else if(line.equals("N")){
+				System.out.println("Okay, but you won't be able to check for covers as it will take far to long.");
+				checkPrint();
+				checkExport();
+				return;
+			}
+			else{
+				//invalid
+				System.out.println("Please input Y or N");
+			}
+		}
+	}
+	
+	public static void checkPrint(){
+		while(true){
+			String line = null;
+			//prompt
+			System.out.println("Would you like to print the data set? (Y/N)");
+			
+			//read line
+			try { line = in.readLine();} 
+			catch (IOException e) { e.printStackTrace();}
+			
+			if(line.equals("Y")){
+				cards.print();
+				return;
+			}
+			else if(line.equals("N")){
+				return;
+			}
+			else{
+				//invalid
+				System.out.println("Please input \"Y\" or \"N\"");
+			}
+		}
+	}
+	
+	public static void checkExport(){
+		while(true){
+			String line = null;
+			//prompt
+			System.out.println("Would you like to export the data set into AllCardsSets.txt? (Y/N)");
+			
+			//read line
+			try { line = in.readLine();} 
+			catch (IOException e) { e.printStackTrace();}
+			
+			if(line.equals("Y")){
+				cards.exportSets();
+				return;
+			}
+			else if(line.equals("N")){
+				return;
+			}
+			else{
+				//invalid
+				System.out.println("Please input \"Y\" or \"N\"");
+			}
+		}
+	}
+	
+	public static void checkCover(){
+		while(true){
+			String line = null;
+			//prompt
+			System.out.println("Would you like to check for covers of 2? (Y/N)");
+			
+			//read line
+			try { line = in.readLine();} 
+			catch (IOException e) { e.printStackTrace();}
+			
+			if(line.equals("Y")){
+				cards.cover2();
+				return;
+			}
+			else if(line.equals("N")){
+				return;
+			}
+			else{
+				//invalid
+				System.out.println("Please input \"Y\" or \"N\"");
+			}
 		}
 	}
 }
