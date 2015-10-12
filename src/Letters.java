@@ -1,4 +1,8 @@
 
+/*
+ * "Now I Know My ABC's" language
+ */
+
 public enum Letters {
 	D,E,F,G,H,J,L,P,Q,R,T,U,V,X,Z,FAIL;
 	
