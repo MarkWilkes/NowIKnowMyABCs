@@ -97,9 +97,9 @@ public class ABCs {
 								String cName = (String)card.get("name");
 								bw.write(cName + "\n");
 								cnCard = new CardName(cName);
-								cnCardF = new CardNameFr(cName);
-								
 								cards.add(cnCard);
+								
+								cnCardF = new CardNameFr(cName);
 								cardsFr.add(cnCardF);
 							} catch (IOException e) {
 								System.out.println("Failed to write line");
@@ -163,8 +163,13 @@ public class ABCs {
 					//if they aren't an instant or sorcery
 					if(!spell){
 						String name = (String)card.get("name");
+						
 						CardName cardname = new CardName(name);
 						cards.add(cardname);
+						
+
+						CardNameFr cnCardF = new CardNameFr(name);
+						cardsFr.add(cnCardF);
 					}
 				}
 			}
@@ -181,6 +186,7 @@ public class ABCs {
 	
 	public static void loadSets(){
 		CardName card = null;
+		CardNameFr cardf = null;
 		
 		FileInputStream fstream = null;
 		try {
@@ -197,7 +203,10 @@ public class ABCs {
 		try {
 			while ((strLine = br.readLine()) != null)   {
 				card = new CardName(strLine);
-				cards.add(card);				
+				cards.add(card);
+				
+				cardf = new CardNameFr(strLine);
+				cardsFr.add(cardf);
 			}
 		} catch (IOException e) {
 			System.out.println("File line read error");
@@ -259,6 +268,7 @@ public class ABCs {
 			
 			if(line.equals("Y")){
 				cards.reduceDatabase();
+				cardsFr.reduceDatabase();
 				checkPrint();
 				checkExport();
 				checkCover();
@@ -289,6 +299,7 @@ public class ABCs {
 			
 			if(line.equals("Y")){
 				cards.print();
+				cardsFr.print();
 				return;
 			}
 			else if(line.equals("N")){
@@ -312,7 +323,22 @@ public class ABCs {
 			catch (IOException e) { e.printStackTrace();}
 			
 			if(line.equals("Y")){
-				cards.exportSets();
+				while(true){
+					System.out.println("English(1) or French(2)");
+					
+					try{line = in.readLine();}
+					catch (IOException e) {e.printStackTrace();}
+					if(line.equals("1")){
+						cards.exportSets();	
+					}
+					else if(line.equals("2")){
+						cardsFr.exportSets();	
+					}
+					else {
+						System.out.println("Sorry, try again");
+					}
+					break;
+				}
 				return;
 			}
 			else if(line.equals("N")){
@@ -337,6 +363,7 @@ public class ABCs {
 			
 			if(line.equals("Y")){
 				cards.cover2();
+				cardsFr.cover2();
 				return;
 			}
 			else if(line.equals("N")){
