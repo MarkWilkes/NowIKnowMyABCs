@@ -1,4 +1,5 @@
 import java.util.*;
+import java.text.Normalizer;
 
 public class CardName {
 	private HashSet<Letters> card;
@@ -12,8 +13,9 @@ public class CardName {
 	}
 	
 	public CardName(String s){
-		//System.out.println(s);
-		card = getSet(s);
+	    String normalized = Normalizer.normalize(s, Normalizer.Form.NFD);
+	    normalized.replaceAll("[^\\p{ASCII}]", "");
+		card = getSet(normalized);
 	}
 	
 	public HashSet<Letters> getSet(){

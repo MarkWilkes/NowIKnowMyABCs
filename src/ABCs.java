@@ -101,6 +101,61 @@ public class ABCs {
 								
 								cnCardF = new CardNameFr(cName);
 								cardsFr.add(cnCardF);
+								JSONArray foreignNames = (JSONArray)card.get("foreignNames");
+								
+								if(foreignNames != null){
+									Iterator<?> lang = foreignNames.iterator();
+									
+									while(lang.hasNext()){
+										JSONObject foreign = (JSONObject) lang.next();
+										
+										if(foreign.get("language").equals("French")){
+											String forName = (String)foreign.get("name");
+											bw.write(forName + "\n");
+											cnCard = new CardName(forName);
+											cards.add(cnCard);
+											
+											cnCardF = new CardNameFr(forName);
+											cardsFr.add(cnCardF);
+										}
+										else if(foreign.get("language").equals("German")){
+											String forName = (String)foreign.get("name");
+											bw.write(forName + "\n");
+											cnCard = new CardName(forName);
+											cards.add(cnCard);
+											
+											cnCardF = new CardNameFr(forName);
+											cardsFr.add(cnCardF);
+										}
+										else if(foreign.get("language").equals("Italian")){
+											String forName = (String)foreign.get("name");
+											bw.write(forName + "\n");
+											cnCard = new CardName(forName);
+											cards.add(cnCard);
+											
+											cnCardF = new CardNameFr(forName);
+											cardsFr.add(cnCardF);
+										}
+										else if(foreign.get("language").equals("Portuguese (Brazil)")){
+											String forName = (String)foreign.get("name");
+											bw.write(forName + "\n");
+											cnCard = new CardName(forName);
+											cards.add(cnCard);
+											
+											cnCardF = new CardNameFr(forName);
+											cardsFr.add(cnCardF);
+										}
+										else if(foreign.get("language").equals("Spanish")){
+											String forName = (String)foreign.get("name");
+											bw.write(forName + "\n");
+											cnCard = new CardName(forName);
+											cards.add(cnCard);
+											
+											cnCardF = new CardNameFr(forName);
+											cardsFr.add(cnCardF);
+										}
+									}
+								}
 							} catch (IOException e) {
 								System.out.println("Failed to write line");
 								System.exit(-1);

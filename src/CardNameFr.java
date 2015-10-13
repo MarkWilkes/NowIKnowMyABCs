@@ -1,3 +1,4 @@
+import java.text.Normalizer;
 import java.util.*;
 
 
@@ -9,7 +10,9 @@ public class CardNameFr {
 	}
 	
 	public CardNameFr(String s){
-		card = getSet(s);
+	    String normalized = Normalizer.normalize(s, Normalizer.Form.NFD);
+	    normalized.replaceAll("[^\\p{ASCII}]", "");
+		card = getSet(normalized);
 	}
 	
 	public HashSet<LettersFr> getSet(){

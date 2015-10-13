@@ -1,4 +1,3 @@
-
 /*
  * "Je Connais Mon Alphabet" language
  */
