@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,10 +9,11 @@ import org.json.simple.parser.ParseException;
 public class ABCs {
 
 	public static CardDatabase cards;
-	public static CardName card;
+	public static CardDatabaseFr cardsFr;
 	
 	public static void main(String[] args) {
 		cards = new CardDatabase();
+		cardsFr = new CardDatabaseFr();
 		
 		loadFromAllSetsx();
 		
@@ -40,6 +40,7 @@ public class ABCs {
 		File file = new File(System.getProperty("user.dir") + File.separator + "AllSets-x.json");
 		String printPath = System.getProperty("user.dir") + File.separator + "cards-MultiLang.txt";
 		CardName cnCard = null;
+		CardNameFr cnCardF = null;
 		
 		File f = new File(printPath);
 		if(!f.exists()){
@@ -95,7 +96,10 @@ public class ABCs {
 								String cName = (String)card.get("name");
 								bw.write(cName + "\n");
 								cnCard = new CardName(cName);
+								cnCardF = new CardNameFr(cName);
+								
 								cards.add(cnCard);
+								cardsFr.add(cnCardF);
 							} catch (IOException e) {
 								System.out.println("Failed to write line");
 								System.exit(-1);
@@ -157,6 +161,8 @@ public class ABCs {
 	}
 	
 	public static void loadSets(){
+		CardName card = null;
+		
 		FileInputStream fstream = null;
 		try {
 			fstream = new FileInputStream(System.getProperty("user.dir")+ File.separator + "AllCardsSets.txt");
